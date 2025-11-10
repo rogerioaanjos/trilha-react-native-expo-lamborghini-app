@@ -1,3 +1,4 @@
+// src/components/GareageScreen/index.tsx
 import { View, Text } from "react-native";
 import { styles } from "./style";
 import CardView from "../../components/CardView";

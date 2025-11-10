@@ -1,3 +1,4 @@
+// src/components/CardView/actions.ts
 import { fetchGetCarData } from "../../api/getCars";
 import { CarModel } from "./props";
 

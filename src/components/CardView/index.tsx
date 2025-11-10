@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, Button, Image } from "react-native";
-
+// src/components/CardView/index.tsx
+import React, { useEffect, useState, useRef } from "react";
+import { View, Text, Animated, TouchableWithoutFeedback, Image } from "react-native";
 import Logo from "../../../assets/logo.png";
 import { styles } from "./style";
 import Divider from "../Divider";
-import { CAR_ASSETS_BASE_URL } from "../../constants/car";
 import BuyButton from "../BuyButton";
 import { CarModel } from "./props";
 import { handleNextItem, handlePreviousItem, loadCarData } from "./actions";
+import { CarAnimations } from "../../animations/CarAnimations";
+import DraggableCar from "../DraggableCar";
 
 export default function CardView() {
   const [carData, setCarData] = useState<CarModel | null>(null);
+  const logoScale = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     (async () => {
@@ -18,55 +20,45 @@ export default function CardView() {
     })();
   }, []);
 
-  const renderLogoBox = () => (
-    <View style={styles.logoContainer}>
-      <Image style={styles.imageLogo} source={Logo} />
-    </View>
-  );
-
-  const renderCarDetails = () => (
-    <View style={{ alignItems: "center" }}>
-      <Text style={styles.carBrand}>Lamborghini</Text>
-      <Text style={styles.carName}>{carData?.carName}</Text>
-    </View>
-  );
-
-  const renderCarImage = () => (
-    <Image
-      style={styles.image}
-      source={{
-        uri: `${CAR_ASSETS_BASE_URL}${carData?.id}.png`,
-      }}
-    />
-  );
-
-  const renderPriceControls = () => (
-    <View style={styles.priceLabelContainer}>
-      <Button
-        title="<"
-        color={"#01A6B3"}
-        onPress={() => handlePreviousItem(carData, setCarData)}
-      />
-      <Text style={styles.priceLabel}> {carData?.price}</Text>
-      <Button
-        title=">"
-        color={"#01A6B3"}
-        onPress={() => handleNextItem(carData, setCarData)}
-      />
-    </View>
-  );
+  const onLogoPress = () => CarAnimations.bounce(logoScale);
 
   return (
     <View style={styles.imageContainer}>
-      {renderLogoBox()}
+      {/* Logo animado */}
+      <View style={styles.logoContainer}>
+        <TouchableWithoutFeedback onPress={onLogoPress}>
+          <Animated.Image
+            style={[styles.imageLogo, { transform: [{ scale: logoScale }] }]}
+            source={Logo}
+          />
+        </TouchableWithoutFeedback>
+      </View>
 
       <Divider />
-      {renderCarDetails()}
-      {renderCarImage()}
+
+      {/* Nome do carro (área fixa) */}
+      <View style={styles.carNameContainer}>
+        <Text style={styles.carBrand}>Lamborghini</Text>
+        <Text style={styles.carName} numberOfLines={2} ellipsizeMode="tail">
+          {carData?.carName}
+        </Text>
+      </View>
+
+      {/* Componente de carro animado */}
+      <View style={{ height: 300, alignItems: "center", justifyContent: "center" }}>
+        <DraggableCar
+          carData={carData}
+          onNext={() => handleNextItem(carData, setCarData)}
+          onPrev={() => handlePreviousItem(carData, setCarData)}
+        />
+      </View>
 
       <Divider />
       <BuyButton />
-      {renderPriceControls()}
+
+      <View style={styles.priceLabelContainer}>
+        <Text style={styles.priceLabel}>{carData?.price}</Text>
+      </View>
     </View>
   );
 }

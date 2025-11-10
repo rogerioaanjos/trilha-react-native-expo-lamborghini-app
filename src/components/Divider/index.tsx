@@ -1,3 +1,4 @@
+// src/components/Divider/index.tsx
 import { View } from "react-native";
 import { styles } from "./styles";
 

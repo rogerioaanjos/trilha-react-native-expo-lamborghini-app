@@ -1,3 +1,4 @@
+// src/components/CardView/style.tsx
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
@@ -33,11 +34,12 @@ export const styles = StyleSheet.create({
     textAlign: "center",
   },
   image: {
-    flex: 1,
-    marginBottom: 10,
     width: "100%",
-    height: "100%",
+    height: 250,
+    resizeMode: "contain",
+    marginBottom: 10,
   },
+
   priceLabelContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -49,4 +51,12 @@ export const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 22,
   },
+
+  carNameContainer: {
+  alignItems: "center",
+  justifyContent: "center",
+  height: 50,
+  paddingHorizontal: 10,
+},
+
 });

@@ -1,8 +1,9 @@
+// src/components/BuyButton/style.tsx
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#01A6B3",
+    backgroundColor: "#c6ad07ff",
     padding: 10,
     width: "80%",
     alignItems: "center",
